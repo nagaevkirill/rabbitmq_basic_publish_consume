@@ -1,5 +1,5 @@
 import pika
-
+import _MQPARAMS as mq
 
 def on_mess(channel, method_frame, header_frame, body):
     if body.decode("utf-8") == 'procedure':
@@ -9,8 +9,8 @@ def on_mess(channel, method_frame, header_frame, body):
     channel.basic_ack(delivery_tag=method_frame.delivery_tag)  # можно вручную присвоить данному сообщению статус Acked
 
 
-creds = pika.credentials.PlainCredentials('admin', 'keepwalking123#')
-connection = pika.BlockingConnection(pika.ConnectionParameters('82.146.57.126', '5672', 'main', creds))
+creds = pika.credentials.PlainCredentials(mq.user, mq.userpass)
+connection = pika.BlockingConnection(pika.ConnectionParameters(mq.server, mq.port, 'main', creds))
 channel = connection.channel()
 
 channel.basic_consume('dev1', on_mess, auto_ack=True)

@@ -1,8 +1,9 @@
 import pika
+import _MQPARAMS as mq
 
-creds = pika.credentials.PlainCredentials('admin', 'keepwalking123#')
+creds = pika.credentials.PlainCredentials(mq.user, mq.userpass)
 
-connection = pika.BlockingConnection(pika.ConnectionParameters('82.146.57.126', '5672', 'main', creds))
+connection = pika.BlockingConnection(pika.ConnectionParameters(mq.server, mq.port, 'main', creds))
 channel = connection.channel()
 
 channel.queue_declare('dev1', durable=True, auto_delete=False)

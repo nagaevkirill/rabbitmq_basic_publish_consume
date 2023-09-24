@@ -1,5 +1,5 @@
 import pika
-
+import _MQPARAMS as mq
 
 def on_mess(channel, method_frame, header_frame, body):
     if body == 'procedure':
@@ -8,8 +8,8 @@ def on_mess(channel, method_frame, header_frame, body):
         print(f'body is not procedure, body is {type(body)}')
 
 
-creds = pika.credentials.PlainCredentials('admin', 'keepwalking123#')
-connection = pika.BlockingConnection(pika.ConnectionParameters('82.146.57.126', '5672', 'main', creds))
+creds = pika.credentials.PlainCredentials(mq.user, mq.userpass)
+connection = pika.BlockingConnection(pika.ConnectionParameters(mq.server, mq.port, 'main', creds))
 channel = connection.channel()
 
 channel.basic_consume('dev1', on_mess)
